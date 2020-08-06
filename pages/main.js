@@ -1,49 +1,57 @@
-// import { Text, View } from 'react-native';
 import { useState, useEffect, useReducer } from 'react';
-import styles from '../style/main.module.css';
-import MyCheckboxList from '../components/MyCheckboxList';
-import MyField from '../components/MyField';
-import Context from '../appFolder/context';
-import reducer from '../appFolder/reducer';
+import MyList from '../components/MyList';
+import MyAddTask from '../components/MyAddTask';
+import Context from '../app/context';
+import reducer, * as actionType from '../app/reducer';
+import Divider from '@material-ui/core/Divider';
+import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import styles from '../app/styles/main.module.css';
+import MySettings from '../components/MySettings';
+import Button from '@material-ui/core/Button';
 
 export default () => {
-  useEffect(() => setListItems(storage.get()), []);
-  useEffect(() => (listItems ? storage.set(listItems) : undefined), [listItems]);
-  const [listItems, setListItems] = useState(null);
-  const [value, setValue] = useReducer(reducer, '');
+  const key = 'listItems';
+  const [state, dispatch] = useReducer(reducer, null);
+  const [edit, setEdit] = useState(false);
+  useEffect(() => actions.A_get(), []);
+  // useEffect(() => (state ? actions.A_set(state) : undefined), [state]);
 
-  const addItem = (value) => {
-    const item = {
-      id: Date.now(),
-      value
-    };
-    setListItems([...listItems, item]);
-  };
+  const tasks = state ? state.length : 0;
+  const completed = state ? state.filter(({ completed }) => completed).length : 0;
+  const actions = getActions(dispatch, key);
 
   return (
-    <Context.Provider value={{ setValue }}>
+    <Context.Provider value={actions}>
       <div className={styles.container}>
-        <h1 className={styles.header}>Cписок покупок</h1>
-        <p>Сортировка и фильтр</p>
-        <div>
-          <MyField value={value} addItem={addItem} />
-          <MyCheckboxList listItems={listItems} />
+        <Typography className={styles.header} variant="h4">
+          Cписок покупок
+        </Typography>
+        <MySettings />
+        <Button onClick={() => setEdit(!edit)} variant="contained" color={edit ? 'secondary' : 'primary'}>
+          Редактировать
+        </Button>
+        <Divider />
+        <MyList edit={edit} listItems={state} />
+        <Divider />
+        <div className={styles.statistics}>
+          <Typography variant="h5">Статистика</Typography>
+          {state ? (
+            <Typography className={styles.last}>{`Всего задач: ${tasks} / Выполнено: ${completed}`}</Typography>
+          ) : (
+            <CircularProgress className={styles.progress} size={20} color="secondary" />
+          )}
         </div>
+        {edit ? <MyAddTask /> : ''}
       </div>
     </Context.Provider>
   );
 };
 
-const storage = {
-  get() {
-    let data = localStorage.getItem('listItems');
-    if (data) data = JSON.parse(data);
-    else data = [];
-    return data;
-  },
-  set(data = []) {
-    if (!Array.isArray(data)) return console.warn('Переданы некорректные данные');
-    let value = JSON.stringify(data);
-    localStorage.setItem('listItems', value);
-  }
-};
+const getActions = (dispatch = console.log, key = 'default') => ({
+  A_add: (payload) => dispatch({ ...actionType.ADD, key, payload }),
+  A_delete: (payload) => dispatch({ ...actionType.DELETE, key, payload }),
+  A_get: (payload) => dispatch({ ...actionType.GET, key, payload }),
+  A_set: (payload) => dispatch({ ...actionType.SET, key, payload }),
+  A_update: (payload) => dispatch({ ...actionType.UPDATE, key, payload })
+});

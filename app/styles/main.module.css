@@ -1,0 +1,21 @@
+.container {
+  margin: 0 auto;
+  max-width: 400px;
+}
+
+.statistics {
+  width: 95%;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+}
+
+.last {
+  padding-bottom: 50px;
+}
+
+.progress {
+  margin: 10px;
+}
