@@ -1,13 +1,13 @@
 import { useState, useEffect, useReducer } from 'react';
-import MyList from '../components/MyList';
-import MyAddTask from '../components/MyAddTask';
+import TaskList from '../components/taskList';
+import MyAddTask from '../components/AddTask';
 import Context from '../app/context';
 import reducer, * as actionType from '../app/reducer';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import styles from '../app/styles/main.module.css';
-import MySettings from '../components/MySettings';
+import MySettings from '../components/Settings';
 import Button from '@material-ui/core/Button';
 
 export default () => {
@@ -32,17 +32,25 @@ export default () => {
           Редактировать
         </Button>
         <Divider />
-        <MyList edit={edit} listItems={state} />
+        {state ? (
+          <TaskList listItems={state} menu={['info', 'switch', 'change', 'delete']} />
+        ) : (
+          <div className={styles.progressWrap}>
+            <CircularProgress className={styles.progress} size={20} color="secondary" />
+          </div>
+        )}
         <Divider />
         <div className={styles.statistics}>
           <Typography variant="h5">Статистика</Typography>
           {state ? (
             <Typography className={styles.last}>{`Всего задач: ${tasks} / Выполнено: ${completed}`}</Typography>
           ) : (
-            <CircularProgress className={styles.progress} size={20} color="secondary" />
+            <div className={styles.progressWrap}>
+              <CircularProgress className={styles.progress} size={20} color="secondary" />
+            </div>
           )}
         </div>
-        {edit ? <MyAddTask /> : ''}
+        <MyAddTask />
       </div>
     </Context.Provider>
   );

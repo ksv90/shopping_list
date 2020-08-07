@@ -1,14 +1,14 @@
 import { useState, useContext, useRef } from 'react';
 import Context from '../app/context';
-import { makeStyles } from '@material-ui/core/styles';
+import MyDialog from './Dialog';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
+import { makeStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
-import MyDialog from './MyDialog';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function MyAddTask() {
+export default () => {
   const classes = useStyles();
   const [value, setValue] = useState('');
   const [open, setOpen] = useState(false);
@@ -85,4 +85,4 @@ export default function MyAddTask() {
       </MyDialog>
     </div>
   );
-}
+};
