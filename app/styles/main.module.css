@@ -26,3 +26,8 @@
   margin: 20px auto;
   display: block;
 }
+
+.button {
+  text-align: center;
+  padding: 10px;
+}

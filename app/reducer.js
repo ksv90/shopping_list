@@ -23,12 +23,18 @@ export default (state, { type, payload, key }) => {
   }
 };
 
+const defaultState = [
+  { id: 1597250572181, value: 'Купить хлеб', completed: true },
+  { id: 1597250580140, value: 'Посмотреть фильм' },
+  { id: 1597250591620, value: 'Сходить в гости' }
+];
+
 const getState = (key) => {
   let newState = localStorage.getItem(key);
   if (newState) newState = JSON.parse(newState);
   else {
     console.warn('В базе данных нет информации по данному ключу');
-    newState = [];
+    newState = defaultState;
   }
   return newState;
 };

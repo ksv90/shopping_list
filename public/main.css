@@ -1,0 +1,10 @@
+body {
+  max-width: 500px;
+  margin: 0 auto !important;
+}
+
+body > div:first-child {
+  background: #e7edf2;
+  border-radius: 10px;
+  min-height: 130px;
+}

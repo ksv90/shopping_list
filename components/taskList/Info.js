@@ -1,4 +1,4 @@
-import MyDialog from '../Dialog';
+import Dialog from '../Dialog';
 import Button from '@material-ui/core/Button';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { makeStyles } from '@material-ui/core/styles';
@@ -21,12 +21,12 @@ export default ({ item, onClose }) => {
   const handleClose = () => onClose?.(id);
 
   return (
-    <MyDialog open={Boolean(id)} onClose={handleClose} title={value}>
+    <Dialog open={Boolean(id)} onClose={handleClose} title={value}>
       <DialogContentText>Дата создания: {new Date(id).toLocaleDateString()}</DialogContentText>
       <DialogContentText>Выполнено: {completed ? 'да' : 'нет'}</DialogContentText>
       <Button className={classes.right} onClick={handleClose} color="primary">
         Закрыть
       </Button>
-    </MyDialog>
+    </Dialog>
   );
 };

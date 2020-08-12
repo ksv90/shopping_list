@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -11,7 +10,6 @@ const useStyles = makeStyles(() => ({
     margin: '0 auto'
   },
   item: {
-    border: '2px solid #3dda0c',
     borderRadius: 10,
     margin: '10px auto',
     minHeight: 50,
@@ -29,7 +27,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-export default ({ mainClick, actionClick, icon, data }) => {
+export default ({ mainClick, actionClick, action2Click, icon, icon2, data, children, className }) => {
   const { id, value, index } = data;
   const classes = useStyles();
 
@@ -41,14 +39,32 @@ export default ({ mainClick, actionClick, icon, data }) => {
     actionClick?.(id);
   };
 
+  const handleAction2 = (event) => {
+    event.stopPropagation();
+    action2Click?.(id);
+  };
+
   return (
     <>
-      <ListItem className={classes.item} dense button onClick={handleMain}>
+      <ListItem
+        className={`${classes.item} ${className || ''}`}
+        dense
+        button
+        onClick={handleMain}
+        aria-label="menu-item"
+      >
         <ListItemIcon className={classes.icon}>{index}</ListItemIcon>
-        <ListItemText primary={value} />
+        <ListItemText primary={children || value}></ListItemText>
         <IconButton onClick={handleAction} className={classes.iconButton}>
           {icon}
         </IconButton>
+        {icon2 ? (
+          <IconButton onClick={handleAction2} className={classes.iconButton}>
+            {icon2}
+          </IconButton>
+        ) : (
+          ''
+        )}
       </ListItem>
     </>
   );

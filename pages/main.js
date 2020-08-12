@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import TaskList from '../components/taskList';
 import MyAddTask from '../components/AddTask';
 import Context from '../app/context';
@@ -8,29 +8,41 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import styles from '../app/styles/main.module.css';
 import MySettings from '../components/Settings';
+import Router from 'next/router';
 import Button from '@material-ui/core/Button';
 
+const key = 'listItems';
 export default () => {
-  const key = 'listItems';
+  const [loading, setLoading] = useState(false);
   const [state, dispatch] = useReducer(reducer, null);
-  const [edit, setEdit] = useState(false);
   useEffect(() => actions.A_get(), []);
   // useEffect(() => (state ? actions.A_set(state) : undefined), [state]);
 
   const tasks = state ? state.length : 0;
   const completed = state ? state.filter(({ completed }) => completed).length : 0;
   const actions = getActions(dispatch, key);
-
+  const handleClick = () => {
+    setLoading(true);
+    Router.push('/');
+  };
   return (
     <Context.Provider value={actions}>
       <div className={styles.container}>
+        {loading ? (
+          <p className={styles.button}>
+            <CircularProgress size={20} color="secondary" />
+          </p>
+        ) : (
+          <p className={styles.button}>
+            <Button onClick={handleClick} variant="contained" color="primary">
+              {'< На главную'}
+            </Button>
+          </p>
+        )}
         <Typography className={styles.header} variant="h4">
-          Cписок покупок
+          Cписок задач
         </Typography>
         <MySettings />
-        <Button onClick={() => setEdit(!edit)} variant="contained" color={edit ? 'secondary' : 'primary'}>
-          Редактировать
-        </Button>
         <Divider />
         {state ? (
           <TaskList listItems={state} menu={['info', 'switch', 'change', 'delete']} />

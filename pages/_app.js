@@ -16,6 +16,7 @@ export default function MyApp({ Component, pageProps }) {
     <>
       <Head>
         <title>My page</title>
+        <link rel="stylesheet" href="./main.css" />
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>
       <ThemeProvider theme={theme}>

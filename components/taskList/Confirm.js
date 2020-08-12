@@ -9,14 +9,14 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-export default ({ id, yes, no }) => {
+export default ({ id, title, type, yes, no }) => {
   const classes = useStyles();
 
   const negative = () => no?.();
-  const positive = () => yes?.(id);
+  const positive = () => yes?.({ id, type });
 
   return (
-    <MyDialog open={Boolean(id)} onClose={negative} title="Вы действительно хотите удалить элемент?" close={false}>
+    <MyDialog open={Boolean(id)} onClose={negative} title={title} close={false}>
       <DialogContentText>Это действие нельзя будет отменить!</DialogContentText>
       <div className={classes.right}>
         <Button onClick={negative} color="primary">
