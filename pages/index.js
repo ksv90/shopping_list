@@ -15,7 +15,7 @@ export default function App() {
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.text}>Добро пожаловать 👋</Text>
+			<Text style={styles.text}>Привет 👋</Text>
 			{loading ? (
 				<CircularProgress size={20} color='secondary' />
 			) : (
